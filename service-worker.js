@@ -7,7 +7,6 @@ const urlsToCache = [
     '/icon-512x512.png'
 ];
 
-// Installeer de Service Worker
 self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -18,20 +17,18 @@ self.addEventListener('install', function(event) {
     );
 });
 
-// Haal bestanden op uit de cache
 self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request)
         .then(function(response) {
             if (response) {
-                return response; // Geef gecachte versie terug
+                return response;
             }
-            return fetch(event.request); // Haal van het netwerk
+            return fetch(event.request);
         })
     );
 });
 
-// Verwijder oude caches bij activatie van een nieuwe Service Worker
 self.addEventListener('activate', function(event) {
     const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
